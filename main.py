@@ -21,6 +21,20 @@ app.include_router(album.router)
 app.include_router(story.router)
 app.include_router(insights.router)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app = FastAPI(
+    servers=[
+        {"url": "https://mymacserver.ddns.net:9443", "description": "Home environment"},
+    ],
+    root_path="/instaloaderweb-rest",
+)
 
 @app.get("/", tags=["system"], summary="Redirect to /docs")
 async def root():
@@ -57,7 +71,7 @@ def custom_openapi():
     #     if body_field:
     #         body_field.type_.__name__ = 'name'
     openapi_schema = get_openapi(
-        title="instagrapi-rest",
+        title="instaloaderweb-rest",
         version="1.0.0",
         description="RESTful API Service for instagrapi",
         routes=app.routes,
