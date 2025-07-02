@@ -8,6 +8,7 @@ from routers import (
     igtv, clip, album, story,
     insights
 )
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(auth.router)
