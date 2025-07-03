@@ -66,16 +66,17 @@ async def handle_exception(request, exc: Exception):
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
-    # for route in app.routes:
-    #     body_field = getattr(route, 'body_field', None)
-    #     if body_field:
-    #         body_field.type_.__name__ = 'name'
+    
     openapi_schema = get_openapi(
         title="instaloaderweb-rest",
         version="1.0.0",
         description="RESTful API Service for instagrapi",
         routes=app.routes,
+        servers=[
+            {"url": "https://mymacserver.ddns.net:9443/instaloaderweb-rest", "description": "Home environment"},
+        ]
     )
+
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
