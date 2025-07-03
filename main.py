@@ -10,11 +10,17 @@ from routers import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(
+    servers=[
+        {"url": "https://mymacserver.ddns.net:9443", "description": "Home environment"},
+    ],
+    root_path="/instaloaderweb-rest",
+)
+
 app.include_router(auth.router)
 app.include_router(media.router)
 app.include_router(video.router)
-app.include_router(photo.router)
+app.include_router(photo.route)
 app.include_router(user.router)
 app.include_router(igtv.router)
 app.include_router(clip.router)
@@ -30,18 +36,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app = FastAPI(
-    servers=[
-        {"url": "https://mymacserver.ddns.net:9443", "description": "Home environment"},
-    ],
-    root_path="/instaloaderweb-rest",
-)
-
 @app.get("/", tags=["system"], summary="Redirect to /docs")
 async def root():
     """Redirect to /docs
     """
-    return RedirectResponse(url="/docs")
+    return RedirectResponse(url="/instaloaderweb-rest/docs")
 
 
 @app.get("/version", tags=["system"], summary="Get dependency versions")
